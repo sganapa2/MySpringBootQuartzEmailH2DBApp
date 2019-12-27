@@ -49,8 +49,9 @@ public class EmailJob implements Job
 				//send an email
 				//update DB to set an email sent as true
 				System.out.println("Sending an email and updating db to set to email_sent=true");
-				sendEmail(notification);
-				updateDbRecord(notification.getId(), true);
+				if(sendEmail(notification)) {
+					updateDbRecord(notification.getId(), true);
+				}
 			} else {
 				System.out.println("Skipping to send an email due to alredy set email_sent=true");
 			}
