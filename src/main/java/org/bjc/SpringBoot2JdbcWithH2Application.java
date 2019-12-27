@@ -58,7 +58,7 @@ public class SpringBoot2JdbcWithH2Application implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // 2019-12-26T13:53:10
+		/*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // 2019-12-26T13:53:10
 
 		EmailNotificationData notificationData = new EmailNotificationData();
 		notificationData.setId(1L);
@@ -102,12 +102,12 @@ public class SpringBoot2JdbcWithH2Application implements CommandLineRunner {
 		}
 		
 		
-		logger.info("All users 2 -> {}", lstEmailNotificationData);
+		logger.info("All users 2 -> {}", lstEmailNotificationData);*/
 		
 		JobDetail job = JobBuilder.newJob(EmailJob.class).withIdentity("dummyJobName", "group1").build();
 		//job.getJobDataMap().put("repoObj", repository);
 		
-		job.getJobDataMap().put("majakey", "majakey->chi->value");
+		//job.getJobDataMap().put("majakey", "majakey->chi->value");
 		
 		//List<EmailNotificationData> lstEmailNotificationData = repository.findAll();
 		//job.getJobDataMap().put("lstEmailNotificationData", lstEmailNotificationData);

@@ -15,4 +15,4 @@ CREATE TABLE EMAIL_NOTIFICATION_DATA (
   priority INTEGER NOT NULL
 );
 
-INSERT INTO  EMAIL_NOTIFICATION_DATA  VALUES(10, 'agunduagain@gmail.com', 'agunduagain@gmail.com', 'Email Subject', 'Email Content', '', 'agunduagain@gmail.com','agunduagain@gmail.com', '2019-12-26 13:53:10', '2019-12-26 13:53:10', 'santosh ganapa', false, 1);
+INSERT INTO  EMAIL_NOTIFICATION_DATA  VALUES(101, 'agunduagain@gmail.com', 'agunduagain@gmail.com', 'Email Subject', 'Email Content', '', 'agunduagain@gmail.com','agunduagain@gmail.com', '2019-12-26 13:53:10', '2019-12-26 13:53:10', 'santosh ganapa', false, 1);

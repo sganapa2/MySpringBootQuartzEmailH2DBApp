@@ -36,10 +36,7 @@ public class EmailJob implements Job
 	throws JobExecutionException {
 		System.out.println("Hello Quartz!");
 		
-		System.out.println("======>Printing from jobcontext:" + context.getJobDetail().getJobDataMap().getString("majakey"));
-		
-		
-		List<EmailNotificationData> lstEmailNotificationData = fetchData();
+		List<EmailNotificationData> lstEmailNotificationData = fetchDataToSendEmail();
 		//repository = (EmailNotificationRepository) context.getJobDetail().getJobDataMap().get("repoObj");
 		//List<EmailNotificationData> lstEmailNotificationData = repository.findAll();
 		
@@ -53,22 +50,29 @@ public class EmailJob implements Job
 				//update DB to set an email sent as true
 				System.out.println("Sending an email and updating db to set to email_sent=true");
 				sendEmail(notification);
+				updateDbRecord(notification.getId(), true);
 			} else {
 				System.out.println("Skipping to send an email due to alredy set email_sent=true");
 			}
 			} catch (Exception e) {
 				//update DB to set an email sent as false due to failure
 				System.out.println("Sending an email and updating db to set to email_sent=false");
+				updateDbRecord(notification.getId(), false);
 			}
 		}
 	}
 	
-	public List<EmailNotificationData> fetchData(){
+	public void updateDbRecord(long id, boolean emailSentFlag) {
+		logger.info("UPDATING email_sent flag for id:" + id + " AND emailSentFlag:" + emailSentFlag);
+		repository.updateEmailSentFlag(id, emailSentFlag);
+	}
+	
+	public List<EmailNotificationData> fetchDataToSendEmail() {
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // 2019-12-26T13:53:10
+		/*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // 2019-12-26T13:53:10
 
 		EmailNotificationData notificationData = new EmailNotificationData();
-		//notificationData.setId(1L);
+		notificationData.setId(1L);
 		notificationData.setToEmail("agunduagain@gmail.com");
 		notificationData.setFromEmail("agunduagain@gmail.com");
 		notificationData.setSubject("subject");
@@ -90,9 +94,10 @@ public class EmailJob implements Job
 		if(repository == null) {
 			System.out.println("repository is NULL========================");
 		}
-		logger.info("Inserting -> {}", repository.insert(notificationData));
-		
-		return  repository.findAll();
+		if(repository.findById(notificationData.getId()).isEmpty()) {
+			logger.info("Inserting -> {}", repository.insert(notificationData));
+		}	*/	
+		return  repository.findAllWithNoStatus();
 	}
 	
 	public boolean sendEmail(EmailNotificationData emailData) {
@@ -109,6 +114,7 @@ public class EmailJob implements Job
 			emailSentStatus = true;
 		} catch (MailException mexc) {
 			emailSentStatus = false;
+			logger.error(mexc.getMessage());
 		}
 		return emailSentStatus;
 	}

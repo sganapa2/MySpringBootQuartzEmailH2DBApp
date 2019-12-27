@@ -24,8 +24,16 @@ public class EmailNotificationRepository {
     }
     
     public List < EmailNotificationData > findAll() {
-	    return jdbcTemplate.query("select * from email_notification_data", new EmailNotificationRowMapper());
+	    return jdbcTemplate.query(QueriesConstants.GET_ALL, new EmailNotificationRowMapper());
 	}
+    
+    public List < EmailNotificationData > findAllWithNoStatus() {
+	    return jdbcTemplate.query(QueriesConstants.GET_EMAIL_NOT_SENT, new EmailNotificationRowMapper());
+	}
+    
+    public int updateEmailSentFlag(long id, boolean emailSentFlag) {
+   		return jdbcTemplate.update(QueriesConstants.UPDATE_EMAIL_SENT_FLAG, new Object[] { emailSentFlag, id });	
+    }
     
 	public int deleteById(long id) {
 		return jdbcTemplate.update("delete from EMAIL_NOTIFICATION_DATA where id=?", new Object[] { id });
